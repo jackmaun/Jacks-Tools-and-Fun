@@ -25,7 +25,7 @@ def manual_hash(password: str, salt: bytes, memory_cost: int, time_cost: int, pa
 
     # create more memory blocks by hashing the last block until memory cost is met
     for _ in range(memory_cost - 1):
-        new_block = hashlib.sha256(memory_blocks[-1]).digest()
+        new_block = hashlib.sha512(memory_blocks[-1]).digest()
         memory_blocks.append(new_block)
 
     # for each iteration in time cost, it iterates over each time block
