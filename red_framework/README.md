@@ -1,2 +1,2 @@
-# Jack Sayer Maunsell
-# Colorado State University
+# READ ME NOW
+Jack Sayer Maunsell
