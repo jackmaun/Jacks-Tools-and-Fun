@@ -6,8 +6,7 @@ How it works:
 
 Step 1:
 	the function 'find_sys_call_table' finds the system call table in kernel memory. The call table is just an array of function pointers, where each entry corresponds to a system call, i.e. read, write, getdents64
-
-	This function iterates through kernel memory starting from PAGE_OFFSET (where kernel memory starts) and looks for the address of the system call table by looking for a pointer called 'sys_close' (basically a close system call) at index __NR_close. Once it finds this it assumes this is where the system call table is.
+This function iterates through kernel memory starting from PAGE_OFFSET (where kernel memory starts) and looks for the address of the system call table by looking for a pointer called 'sys_close' (basically a close system call) at index __NR_close. Once it finds this it assumes this is where the system call table is.
 
 Step 2:
 	after finding the sys call table, the module saves a reference to the original getdents64 function index at sys_call_table[\__NR_getdents64]. This will allow the original getdents64 to be called even when using the hooked call.
