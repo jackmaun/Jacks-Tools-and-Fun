@@ -10,7 +10,7 @@ Step 1:
 	This function iterates through kernel memory starting from PAGE_OFFSET (where kernel memory starts) and looks for the address of the system call table by looking for a pointer called 'sys_close' (basically a close system call) at index __NR_close. Once it finds this it assumes this is where the system call table is.
 
 Step 2:
-	after finding the sys call table, the module saves a reference to the original getdents64 function index at sys_call_tabel[\__NR_getdents64]. This will allow the original getdents64 to be called even when using the hooked call.
+	after finding the sys call table, the module saves a reference to the original getdents64 function index at sys_call_table[\__NR_getdents64]. This will allow the original getdents64 to be called even when using the hooked call.
 
 Step 3:
 	the sys call table is usually read-only. To hook the system call, the module needs to temporarily disable the write protection by modifying the CPU's CR0 register.
