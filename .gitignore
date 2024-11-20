@@ -3,3 +3,6 @@
 **/*.pyc
 **/*.pyo
 **/.vscode
+
+malware-analysis/config/__pycache__/
+malware-analysis/core/__pycache__/
