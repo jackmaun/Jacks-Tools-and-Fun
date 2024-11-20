@@ -1,3 +1,5 @@
-.vscode/
-*/build/
-/jack-rat/.vscode/
+# Ignore all __pycache__ directories
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/.vscode
