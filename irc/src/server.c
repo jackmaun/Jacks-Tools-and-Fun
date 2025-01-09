@@ -29,7 +29,7 @@ SSL_CTX *create_context() {
     const SSL_METHOD *method = TLS_server_method();
     SSL_CTX *ctx = SSL_CTX_new(method);
 
-    if (!ctx) {
+    if(!ctx) {
         perror("Unable to create SSL context");
         ERR_print_errors_fp(stderr);
         return NULL;
@@ -43,17 +43,17 @@ bool configure_context(SSL_CTX *ctx) {
 
     SSL_CTX_set_verify_depth(ctx, 1);
 
-    if (SSL_CTX_use_certificate_file(ctx, "server.crt", SSL_FILETYPE_PEM) <= 0) {
+    if(SSL_CTX_use_certificate_file(ctx, "server.crt", SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
         return false;
     }
 
-    if (SSL_CTX_use_PrivateKey_file(ctx, "server.key", SSL_FILETYPE_PEM) <= 0) {
+    if(SSL_CTX_use_PrivateKey_file(ctx, "server.key", SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
         return false;
     }
 
-    if (!SSL_CTX_check_private_key(ctx)) {
+    if(!SSL_CTX_check_private_key(ctx)) {
         fprintf(stderr, "Private key does not match the certificate\n");
         return false;
     }
@@ -87,7 +87,7 @@ bool server_init(IRCServer *server, int port) {
     }
     
     int opt = 1;
-    if (setsockopt(server->server_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt)) < 0) {
+    if(setsockopt(server->server_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt)) < 0) {
         perror("setsockopt failed");
         close(server->server_fd);
         return false;
@@ -167,19 +167,20 @@ void handle_new_client(IRCServer *server) {
 }
 
 void server_run(IRCServer *server) {
-    while (1) {
+    while(1) {
         int poll_count = poll(server->fds, server->client_count + 1, -1);
         
-        if (poll_count == -1) {
+        if(poll_count == -1) {
             perror("poll failed");
             break;
         }
 
         for (int i = 0; i < server->client_count + 1; i++) {
-            if (server->fds[i].revents & POLLIN) {
-                if ((intptr_t)server->fds[i].fd == (intptr_t)server->server_fd) {
+            if(server->fds[i].revents & POLLIN) {
+                if((intptr_t)server->fds[i].fd == (intptr_t)server->server_fd) {
                     handle_new_client(server);
-                } else {
+                }
+                else {
                     handle_client_message(&server->fds[i], server);
                 }
             }

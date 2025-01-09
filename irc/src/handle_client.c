@@ -124,7 +124,8 @@ void handle_client_message(struct pollfd *client_fd, IRCServer *server) {
     if(strncmp(buffer, "NICK ", 5) == 0 || strncmp(buffer, "/NICK ", 6) == 0) {
         const char *nick_param = strchr(buffer, ' ') + 1;
         handle_nick_command(server, client_fd->fd, nick_param);
-    } else {
+    }
+    else {
         char time_str[9];
         format_time(time_str, sizeof(time_str));
         
