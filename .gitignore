@@ -6,3 +6,9 @@
 
 malware-analysis/config/__pycache__/
 malware-analysis/core/__pycache__/
+
+irc/src/*.crt
+irc/src/*.key
+*.crt
+*.key
+
