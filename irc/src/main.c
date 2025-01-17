@@ -13,7 +13,7 @@ int main() {
 
     IRCServer server;
 
-    if(!server_init(&server, 6667)) {
+    if(!server_init(&server, 6697)) {
         fprintf(stderr, "Failed to init\n");
         WSACleanup();
         return 1;

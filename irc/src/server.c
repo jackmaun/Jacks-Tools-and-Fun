@@ -162,7 +162,7 @@ void handle_new_client(IRCServer *server) {
     server->client_count++;
 
     char msg[512];
-    snprintf(msg, sizeof(msg), "Welcome! Use /NICK <nickname> to set your nickname\r\n");
+    snprintf(msg, sizeof(msg), "Welcome to the Cheese Dungeon! Use /NICK <nickname> to set your nickname\r\n");
     SSL_write(ssl, msg, strlen(msg));
 }
 
