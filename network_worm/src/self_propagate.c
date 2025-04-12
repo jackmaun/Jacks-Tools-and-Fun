@@ -50,6 +50,5 @@ void send_file(const char *ip, const char *filename) {
 	
 	fclose(file);
 	close(sock);
-
 }
 

@@ -114,7 +114,7 @@ void handle_client_message(struct pollfd *client_fd, IRCServer *server) {
     }
 
     buffer[bytes_read] = '\0';
-    
+
     while(bytes_read > 0 && (buffer[bytes_read-1] == '\n' || buffer[bytes_read-1] == '\r')) {
         buffer[--bytes_read] = '\0';
     }
