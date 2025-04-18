@@ -16,6 +16,7 @@
 
 - [hook_getdents64](https://github.com/jackmaun/Jacks-Tools-and-Fun/tree/main/hook_getdents64)  
   A Linux kernel module that hooks the `getdents64` syscall to hide files from user space tools like `ls` and `readdir()`. Implements syscall table discovery by scanning kernel memory for a known function pointer match (`sys_close`), then overwrites `__NR_getdents64` to        redirect directory reads to a custom handler. Filters out any file containing the substring `"hidden_file"` directly in kernel space. Features live syscall table patching with CR0 write-protect manipulation. Built to learn more about the Linux kernel and system calls.
+
   [Full write-up and explination](https://puzzled-den-b1b.notion.site/Hooking-getdents64-in-the-Linux-Kernel-14924f1021d780a482e6fd23520ba411?pvs=74)
 
 
