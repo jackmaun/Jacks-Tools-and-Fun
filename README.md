@@ -24,6 +24,10 @@
   A full-blown metamorphic malware PoC written in C. Features polymorphic encryption routines with inline assembly, self-replication, SSH-based lateral movement, anti-debugging, in-memory payload execution, basic credential harvesting, and C2 exfil via XOR’d HTTP. This        binary mutates itself on each run, rewrites its own payload, and infects everything in its path. Built to learn.
  *Write-up in progress*
 
+- [jack-rat](https://github.com/jackmaun/Jacks-Tools-and-Fun/tree/main/jack-rat)  
+  A Windows reverse shell written in C using Winsock and raw WinAPI. Spawns an interactive `cmd.exe` shell over TCP, establishes persistence via registry key injection, and includes basic VM detection logic via Windows registry checks. Implements custom I/O pipe redirection and command handling for remote shell control. Built to learn Windows internals, persistence, and shellcoding.  
+
+
 - [irc](https://github.com/jackmaun/Jacks-Tools-and-Fun/tree/main/irc)  
   Custom IRC server and client stack built in C, RFC 1459-compliant with OpenSSL/TLS support. Built natively for Windows, including a `poll()` replacement and low-level socket handling with WinSock2. Handles user connections, message parsing, nickname         management, and secure communication over port 6697. Features custom certificate generation, and raw SSL context config. Built for fun, reverse engineering practice, and protocol learning.
 
